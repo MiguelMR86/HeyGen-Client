@@ -25,7 +25,6 @@ class HeygenBaseClient:
     def post(self, *, url: str, payload: Optional[dict] = None) -> requests.Response:
         # logger.debug(f"Payload: {json.dumps(payload, indent=2, default=str)}")
         response = self._session.post(url, json=payload, headers=self._get_headers())
-        logger.debug(f"POST {url} | Status: {response.status_code}")
 
         response.raise_for_status()
         return response
@@ -34,7 +33,6 @@ class HeygenBaseClient:
     def get(self, *, url: str, params: Optional[dict] = None) -> requests.Response:
         # logger.debug(f"Params: {json.dumps(params, indent=2, default=str)}")
         response = self._session.get(url, params=params, headers=self._get_headers())
-        logger.debug(f"GET {url} | Status: {response.status_code}")
 
         response.raise_for_status()
         return response
