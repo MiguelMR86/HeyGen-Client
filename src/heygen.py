@@ -1,12 +1,14 @@
+import argparse
+import csv
 import json
 import logging
-import os
 import sys
 from logging import getLogger
 
-from colorlog import ColoredFormatter
-
 from client import HeyGenClient
+from dto.avatar import HeyGenAvatar
+from dto.video import HeyGenVideoInput
+from dto.voice import HeyGenTextVoice
 from exceptions import HeygenAPIError
 from log_config import setup_logging
 
@@ -14,7 +16,6 @@ logger = getLogger(__name__)
 
 
 class HeyGenClientManager:
-    client = HeyGenClient()
 
     def __init__(self):
         self.client = HeyGenClient()
@@ -69,44 +70,37 @@ class HeyGenClientManager:
             sys.exit(1)
 
     def action__list_voices(self):
-        voices = self.client.voice.list_all()
-        logger.debug(json.dumps(voices, indent=2, default=str))
+        """
+        Lists all available voices from the HeyGen API.
+        """
+        response = self.client.voice.list_all()
+        logger.info(json.dumps(response, indent=2, default=str))
 
     def action__list_avatars(self):
-        avatars = self.client.avatar.list_all()
-        logger.debug(json.dumps(avatars, indent=2, default=str))
+        """
+        Lists all available avatars from the HeyGen API.
+        """
+        response = self.client.avatar.list_all()
+        logger.info(json.dumps(response, indent=2, default=str))
 
     def action__list_videos(self):
-        videos = self.client.video.list_all()
-        print(videos)
-
-    def action__generate_video(self):
-        pass
-
-    def help(self):
-        actions = [
-            func
-            for func in dir(self)
-            if func.startswith("action__") and not func.startswith("__")
-        ]
-
-        logger.info("Available actions:")
-        for action in actions:
-            logger.info(f"- {action.replace('action__', '')}")
+        """
+        Lists all available videos from the HeyGen API.
+        """
+        response = self.client.video.list_all()
+        logger.info(json.dumps(response, indent=2, default=str))
 
 
 def main():
     """
     Main function to run the HeyGen client manager.
     """
-    setup_logging()
-    manager = HeyGenClientManager()
+    # Set log level based on --debug flag
+    log_level = logging.DEBUG if "--debug" in sys.argv else logging.INFO
+    setup_logging(level=log_level)
 
-    if len(sys.argv) < 2:
-        logger.error("No action provided\n")
-        manager.help()
-    else:
-        manager.handle_action(sys.argv[1], *sys.argv[2:])
+    manager = HeyGenClientManager()
+    manager.run()
 
 
 if __name__ == "__main__":
