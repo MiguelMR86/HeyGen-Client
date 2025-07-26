@@ -7,7 +7,7 @@ idna==3.10
 iniconfig==2.1.0
 isort==6.0.1
 mccabe==0.7.0
--e git+https://github.com/MiguelMR86/HeyGen-Client.git@8b92a7a50df5a63cac1963cf94ddfd7d6c56d7eb#egg=my_package
+-e git+https://github.com/MiguelMR86/HeyGen-Client.git@f8fd1634db70dafad27120de3d5d64c126550c12#egg=my_package
 packaging==25.0
 platformdirs==4.3.8
 pluggy==1.6.0
@@ -15,6 +15,7 @@ Pygments==2.19.2
 pylint==3.3.7
 pylint-pytest==1.1.2
 pytest==8.4.1
+python-dotenv==1.1.1
 requests==2.32.4
 requests-mock==1.12.1
 tomlkit==0.13.3
