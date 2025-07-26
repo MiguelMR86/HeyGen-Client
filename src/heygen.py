@@ -16,13 +16,57 @@ logger = getLogger(__name__)
 class HeyGenClientManager:
     client = HeyGenClient()
 
-    def handle_action(self, action: str | None, *args, **kwargs):
-        try:
-            function = getattr(self, f"action__{action}")
-            function(*args, **kwargs)
-        except AttributeError:
-            logger.error(f"Action {action} not found\n")
-            self.help()
+    def __init__(self):
+        self.client = HeyGenClient()
+        self.parser = argparse.ArgumentParser(
+            description="A command-line interface for the HeyGen API."
+        )
+        self.subparsers = self.parser.add_subparsers(
+            dest="action", help="Available actions", required=True
+        )
+        self._setup_parsers()
+
+    def _setup_parsers(self):
+        """
+        Sets up subparsers for each available action.
+        """
+        self.subparsers.add_parser("list_voices", help="List all available voices.")
+
+        parser_generate = self.subparsers.add_parser(
+            "generate_video", help="Generate a video from a CSV file."
+        )
+        parser_generate.add_argument(
+            "csv_file",
+            type=str,
+            help="Path to the CSV file. Must contain 'text', 'avatar_id', and 'voice_id' columns.",
+        )
+        parser_generate.add_argument(
+            "--title",
+            type=str,
+            default="Generated Video",
+            help="The title of the video.",
+        )
+
+        self.subparsers.add_parser("list_avatars", help="List all available avatars.")
+
+        self.subparsers.add_parser("list_videos", help="List all available videos.")
+
+    def run(self):
+        """
+        Parses arguments and executes the corresponding action.
+        """
+        args_list = [arg for arg in sys.argv[1:]]
+        args = self.parser.parse_args(args_list)
+
+        action_method_name = f"action__{args.action}"
+        action_method = getattr(self, action_method_name, None)
+
+        if action_method:
+            action_method(args)
+        else:
+            logger.error(f"Unknown action '{args.action}'")
+            self.parser.print_help()
+            sys.exit(1)
 
     def action__list_voices(self):
         voices = self.client.voice.list_all()
