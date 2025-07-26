@@ -95,9 +95,7 @@ def main():
     """
     Main function to run the HeyGen client manager.
     """
-    # Set log level based on --debug flag
-    log_level = logging.DEBUG if "--debug" in sys.argv else logging.INFO
-    setup_logging(level=log_level)
+    setup_logging()
 
     manager = HeyGenClientManager()
     manager.run()
