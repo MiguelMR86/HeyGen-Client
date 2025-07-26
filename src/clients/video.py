@@ -20,7 +20,10 @@ class VideoClient:
         List all videos.
         """
         url = f"{self._client.api_urls['v1']}/video.list"
-        return self._client.get(url=url)
+        response = self._client.get(url=url).json()
+        data = response.get("data", None)
+        videos = data.get("videos", [])
+        return videos
 
     def generate(
         self,

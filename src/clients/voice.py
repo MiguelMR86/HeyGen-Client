@@ -14,4 +14,7 @@ class VoiceClient:
         List all voices.
         """
         url = f"{self._client.api_urls['v2']}/voices"
-        return self._client.get(url=url)
+        response = self._client.get(url=url).json()
+        data = response.get("data", None)
+        voices = data.get("voices", [])
+        return voices

@@ -25,10 +25,16 @@ class HeyGenClientManager:
             self.help()
 
     def action__list_voices(self):
-        pass
+        voices = self.client.voice.list_all()
+        logger.debug(json.dumps(voices, indent=2, default=str))
+
+    def action__list_avatars(self):
+        avatars = self.client.avatar.list_all()
+        logger.debug(json.dumps(avatars, indent=2, default=str))
 
     def action__list_videos(self):
-        pass
+        videos = self.client.video.list_all()
+        print(videos)
 
     def action__generate_video(self):
         pass

@@ -14,4 +14,4 @@ class AvatarClient:
         List all avatars.
         """
         url = f"{self._client.api_urls['v2']}/avatars"
-        return self._client.get(url=url)
+        return self._client.get(url=url).json()
