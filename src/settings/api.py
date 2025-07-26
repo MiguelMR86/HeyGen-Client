@@ -1,5 +1,8 @@
 import os
-from typing import Literal
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 API_KEY = os.getenv("HEYGEN_API_KEY")
 BASE_API_URL = "https://api.heygen.com"
